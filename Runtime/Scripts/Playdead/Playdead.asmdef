@@ -1,0 +1,14 @@
+{
+    "name": "VolumetricClouds.Playdead",
+    "rootNamespace": "VolumetricClouds.Playdead",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+} 

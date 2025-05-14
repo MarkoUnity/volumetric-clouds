@@ -18,13 +18,19 @@
     "dependencies": {},
     "samples": [
         {
-            "displayName": "VolumetricClouds",
+            "displayName": "Volumetric Clouds Example",
             "description": "Contains example scene showing the volumetric clouds system",
             "path": "Samples~/Example"
         }
     ],
     "files": [
         "Runtime/**/*",
-        "Runtime.meta"
+        "Runtime.meta",
+        "Samples~/**/*",
+        "Samples~.meta"
+    ],
+    "includePlatforms": [
+        "Editor",
+        "Standalone"
     ]
 } 

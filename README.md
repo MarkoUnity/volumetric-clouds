@@ -1,7 +1,10 @@
 # Volumetric Clouds
-This project is based of https://github.com/yangrc1234/VolumeCloud#
+This project is based of https://github.com/yangrc1234/VolumeCloud#.
+
 A high-quality volumetric cloud rendering system for Unity that provides realistic cloud rendering with customizable parameters.
+
 The cloud rendering logic has been updated to support adaptive raymarch sampling count based on distance and viewing angle.
+
 This is a minimum set of logic required for a working cloud rendering system.
 For more details and features please visit https://github.com/yangrc1234/VolumeCloud#
 
@@ -24,15 +27,9 @@ For more details and features please visit https://github.com/yangrc1234/VolumeC
 4. Select "Add package from git URL..."
 5. Enter the following URL:
    ```
-   https://github.com/yourusername/VolumetricClouds.git
+   https://github.com/MarkoUnity/volumetric-clouds.git
    ```
 6. Click "Add"
-
-### Manual Installation
-
-1. Download the latest release from the [Releases page](https://github.com/yourusername/VolumetricClouds/releases)
-2. Extract the package into your Unity project's `Packages` folder
-3. The package will be automatically recognized by Unity
 
 ## Usage
 

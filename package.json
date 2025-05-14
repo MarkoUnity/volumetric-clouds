@@ -23,18 +23,6 @@
             "path": "Samples~/Example"
         }
     ],
-    "files": [
-        "Runtime/**/*",
-        "Runtime.meta",
-        "Samples~/**/*",
-        "Samples~.meta",
-        "package.json",
-        "package.json.meta",
-        "README.md",
-        "README.md.meta",
-        "LICENSE.md",
-        "LICENSE.md.meta"
-    ],
     "includePlatforms": [
         "Editor",
         "Standalone"

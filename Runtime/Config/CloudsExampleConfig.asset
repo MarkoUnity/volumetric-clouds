@@ -9,34 +9,34 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: edad34612c85d2e4da1745df6c135220, type: 3}
-  m_Name: Cloud Config Example
+  m_Script: {fileID: 11500000, guid: 9f7d8b8b8b8b8b8b8b8b8b8b8b8b8b8b, type: 3}
+  m_Name: CloudsExampleConfig
   m_EditorClassIdentifier: 
   weatherTex: {fileID: 2800000, guid: 4f3f3112dcf000b47ac790c3b15cf3ec, type: 3}
-  weatherTexSize: 50000
-  cloudHeightRange: {x: 1500, y: 8000}
+  weatherTexSize: 40000
+  cloudHeightRange: {x: 1500, y: 9000}
   baseTexture: {fileID: 11700000, guid: 3ed67598438ec1e4dba28385e35a557b, type: 2}
-  baseTile: 0.73
+  baseTile: 1.03
   heightDensityMap: {fileID: 2800000, guid: a27c79a96e56b794a9bcb99b3b2df92b, type: 3}
   overallSize: 50000
   topOffset: 0
   detailTexture: {fileID: 11700000, guid: c978a1d1fdb99d54eb7910eb562fcbd7, type: 2}
-  detailTile: 27.6
-  detailStrength: 0.392
+  detailTile: 36
+  detailStrength: 0.2
   curlNoise: {fileID: 2800000, guid: 864afbdb4b1b36c42be5cac8f2556237, type: 2}
-  curlTile: 0.3
-  curlStrength: 0.15
-  overallDensity: 0.873
-  cloudTypeModifier: 0.734
-  cloudCoverageModifier: 0.753
+  curlTile: 0.01
+  curlStrength: 5
+  overallDensity: 0.719
+  cloudTypeModifier: 0.558
+  cloudCoverageModifier: 0.704
   windDirection: {x: 1, y: 1}
   windSpeed: 50
-  ambientColor: {r: 0.7924528, g: 0.7924528, b: 0.7924528, a: 1}
-  scatteringCoefficient: 0.869
+  ambientColor: {r: 0.7169812, g: 0.7169812, b: 0.7169812, a: 1}
+  scatteringCoefficient: 0.5
   extinctionCoefficient: 0.52
-  multiScatteringScattering: 0.407
-  multiScatteringExtinction: 0.451
-  multiScatteringEC: 0.436
-  silverSpread: 0.03
-  atmosphereSaturateDistance: 25000
-  atmosphereColor: {r: 0.76470596, g: 0.83921576, b: 0.8470589, a: 1}
+  multiScatteringScattering: 0.577
+  multiScatteringExtinction: 0.577
+  multiScatteringEC: 0.588
+  silverSpread: 0.1
+  atmosphereSaturateDistance: 100000
+  atmosphereColor: {r: 0.627451, g: 0.7058824, b: 0.78431374, a: 1}

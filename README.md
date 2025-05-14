@@ -1,6 +1,10 @@
 # Volumetric Clouds
-
+This project is based of https://github.com/yangrc1234/VolumeCloud#
 A high-quality volumetric cloud rendering system for Unity that provides realistic cloud rendering with customizable parameters.
+The cloud rendering logic has been updated to support adaptive raymarch sampling count based on distance and viewing angle.
+This is a minimum set of logic required for a working cloud rendering system.
+For more details and features please visit https://github.com/yangrc1234/VolumeCloud#
+
 
 ## Features
 
@@ -39,13 +43,9 @@ A high-quality volumetric cloud rendering system for Unity that provides realist
 
 ## Requirements
 
-- Unity 2020.3 or later
-- Universal Render Pipeline (URP) or Built-in Render Pipeline
+- Unity 2022.3 or later
+- Built-in Render Pipeline
 
 ## License
 
 This project is licensed under the terms specified in the [LICENSE](License.txt) file.
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request. 

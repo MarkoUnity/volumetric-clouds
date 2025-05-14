@@ -1,9 +1,9 @@
 {
-    "name": "com.yourusername.volumetricclouds",
+    "name": "com.collider.volumetricclouds",
     "version": "1.0.0",
     "displayName": "Volumetric Clouds",
     "description": "A high-quality volumetric cloud rendering system for Unity",
-    "unity": "2020.3",
+    "unity": "2022.3",
     "keywords": [
         "clouds",
         "volumetric",
@@ -13,12 +13,12 @@
     "author": {
         "name": "Your Name",
         "email": "your.email@example.com",
-        "url": "https://github.com/yourusername"
+        "url": "https://github.com/MarkoUnity/"
     },
     "dependencies": {},
     "samples": [
         {
-            "displayName": "Example Scene",
+            "displayName": "VolumetricClouds",
             "description": "Contains example scene showing the volumetric clouds system",
             "path": "Example"
         }

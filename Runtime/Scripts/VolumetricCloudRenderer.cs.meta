@@ -3,7 +3,11 @@ guid: 8f7d8b8b8b8b8b8b8b8b8b8b8b8b8b8b
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - configuration: {instanceID: 0}
+  - cloudShader: {fileID: 4800000, guid: af7d8b8b8b8b8b8b8b8b8b8b8b8b8b8b, type: 3}
+  - heightPreprocessShader: {fileID: 7200000, guid: 40276bd53f35a694e8d4e025ca310775, type: 3}
+  - cloudHeightProcessShader: {fileID: 4800000, guid: b80bf04ca56d3d642a6b925cff3f5ddf, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

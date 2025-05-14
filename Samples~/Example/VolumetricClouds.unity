@@ -321,18 +321,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f7d8b8b8b8b8b8b8b8b8b8b8b8b8b8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  configuration: {fileID: 11400000, guid: ef419188cb1a87c4b86e130cbfab540e, type: 2}
+  configuration: {fileID: 11400000, guid: 1a6f4012f5a9c684cae0c0a9b83ae644, type: 2}
   downSample: 2
   allowCloudFrontObject: 0
   minSampleCount: 8
   maxSampleCount: 64
   sampleDistanceScale: 2
   densitySampleScale: 1
-  useHierarchicalHeightMap: 1
   cloudShader: {fileID: 4800000, guid: af7d8b8b8b8b8b8b8b8b8b8b8b8b8b8b, type: 3}
   heightPreprocessShader: {fileID: 7200000, guid: 40276bd53f35a694e8d4e025ca310775, type: 3}
   cloudHeightProcessShader: {fileID: 4800000, guid: b80bf04ca56d3d642a6b925cff3f5ddf, type: 3}
-  showSampleCount: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -3,7 +3,12 @@ guid: 9f7d8b8b8b8b8b8b8b8b8b8b8b8b8b8b
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - weatherTex: {instanceID: 0}
+  - baseTexture: {instanceID: 0}
+  - heightDensityMap: {instanceID: 0}
+  - detailTexture: {instanceID: 0}
+  - curlNoise: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -74,15 +74,10 @@
 			CGPROGRAM
 			#pragma multi_compile _ ALLOW_CLOUD_FRONT_OBJECT		//When enabled, raymarch is marched until scene depth. This will bring some artifacts when objects move in front of cloud.
 																//Or disable, cloud is always behind object, and raymarch is ended if any z is detected.
-			#pragma multi_compile _ USE_HI_HEIGHT
 			#pragma vertex vert
 			#pragma fragment frag
 
-#if USE_HI_HEIGHT
 			#include "./CloudHierarchicalRaymarch.cginc"
-#else
-			#include "./CloudNormalRaymarch.cginc"
-#endif	
 			#include "UnityCG.cginc"
 
 			// Declare the variables from Properties
@@ -147,12 +142,8 @@
 
 				float intensity, distance;
 				
-#if USE_HI_HEIGHT
 				int iteration_count;
 				float density = HierarchicalRaymarch(worldPos, viewDir, raymarchEnd, sample_count, offset, /*out*/intensity, /*out*/distance, /*out*/iteration_count);
-#else
-				float density = GetDensity(worldPos, viewDir, raymarchEnd, sample_count, offset, /*out*/intensity, /*out*/distance);
-#endif
 				return float4(intensity, distance, 1.0f, density);
 			}
 
@@ -165,7 +156,6 @@
 				#pragma vertex vert
 				#pragma fragment frag
 				#pragma multi_compile _ ALLOW_CLOUD_FRONT_OBJECT
-				#pragma multi_compile _ USE_HI_HEIGHT
 
 				#include "./CloudShaderHelper.cginc"
 				#include "UnityCG.cginc"

@@ -31,7 +31,6 @@ For more details and features please visit https://github.com/yangrc1234/VolumeC
    ```
 6. Click "Add"
 
-> **Note:** When importing the package, Unity might create a "Resources" folder and a "BillingMode" text asset in your project. These are Unity-generated files and can be safely ignored or deleted.
 
 ## Usage
 

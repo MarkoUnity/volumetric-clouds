@@ -31,10 +31,16 @@ For more details and features please visit https://github.com/yangrc1234/VolumeC
    ```
 6. Click "Add"
 
+> **Note:** When importing the package, Unity might create a "Resources" folder and a "BillingMode" text asset in your project. These are Unity-generated files and can be safely ignored or deleted.
+
 ## Usage
 
 1. Import the package into your project
-2. Open the example scene in `Example/Scenes/Example.unity`
+2. To use the example scene:
+   - In the Package Manager, find "Volumetric Clouds" package
+   - Click on the package to see its details
+   - In the Samples section, click "Import" next to the example scene
+   - The example scene will be imported into your project's Assets folder
 3. Add the `VolumetricCloudRenderer` component to your camera
 4. Configure the cloud parameters using the `VolumetricCloudConfiguration` component
 

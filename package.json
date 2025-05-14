@@ -11,8 +11,8 @@
         "graphics"
     ],
     "author": {
-        "name": "Your Name",
-        "email": "your.email@example.com",
+        "name": "Collider",
+        "email": "info@collider.hr",
         "url": "https://github.com/MarkoUnity/"
     },
     "dependencies": {},
@@ -20,7 +20,7 @@
         {
             "displayName": "VolumetricClouds",
             "description": "Contains example scene showing the volumetric clouds system",
-            "path": "Example"
+            "path": "Samples~/Example"
         }
     ]
 } 

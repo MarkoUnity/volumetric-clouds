@@ -6,6 +6,8 @@
 [Bb]uilds/
 [Ll]ogs/
 [Uu]ser[Ss]ettings/
+[Rr]esources/
+*.BillingMode.txt
 
 # VS/Rider/MD/Consulo
 .vs/

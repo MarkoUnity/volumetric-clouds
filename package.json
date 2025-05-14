@@ -24,6 +24,7 @@
         }
     ],
     "files": [
-        "Runtime/**/*"
+        "Runtime/**/*",
+        "Runtime.meta"
     ]
 } 

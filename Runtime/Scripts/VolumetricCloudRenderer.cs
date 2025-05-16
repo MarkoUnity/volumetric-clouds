@@ -217,16 +217,38 @@ namespace VolumetricClouds {
 
         private void AssignMainLight()
         {
-            Light[] lights = FindObjectsOfType<Light>();
-            
-            if (lights == null || lights.Length == 0) {
+            // First try to get the sun from lighting settings
+            if (RenderSettings.sun != null) {
+                directionalLight = RenderSettings.sun;
                 return;
             }
 
-            foreach (Light light in lights) {
-                if (light.type == LightType.Directional) {
-                    directionalLight = light;
-                    break;
+            // Try to find a directional light in the current scene
+            Light[] lights = FindObjectsOfType<Light>();
+            
+            if (lights != null && lights.Length > 0) {
+                foreach (Light light in lights) {
+                    if (light.type == LightType.Directional) {
+                        directionalLight = light;
+                        return;
+                    }
+                }
+            }
+
+            // Finally, search through all loaded scenes
+            for (int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; i++) {
+                var scene = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i);
+                if (scene.isLoaded) {
+                    var rootObjects = scene.GetRootGameObjects();
+                    foreach (var root in rootObjects) {
+                        var sceneLights = root.GetComponentsInChildren<Light>();
+                        foreach (var light in sceneLights) {
+                            if (light.type == LightType.Directional) {
+                                directionalLight = light;
+                                return;
+                            }
+                        }
+                    }
                 }
             }
         }

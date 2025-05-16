@@ -39,18 +39,24 @@ namespace VolumetricClouds {
         public VolumetricCloudsConfiguration configuration;
         [Header("Render Settings")]
         [Range(0, 2)]
-        public int downSample = 2;
+        public int downSample = 0;
         public bool allowCloudFrontObject;
+
         
         [Header("Adaptive Sampling")]
         [Range(8, 32)]
-        public int minSampleCount = 8;
+        public int minSampleCount = 32;
         [Range(32, 128)]
-        public int maxSampleCount = 32;
+        public int maxSampleCount = 128;
         [Range(0.1f, 2.0f)]
         public float sampleDistanceScale = 2.0f;
         [Range(0.1f, 2.0f)]
         public float densitySampleScale = 1.0f;
+
+        private RenderTexture cloudShadowTexture;
+        private VolumetricCloudsConfiguration.ShadowQuality previousShadowQuality = VolumetricCloudsConfiguration.ShadowQuality.High;
+        private Material cloudShadowMaterial;
+        private Light directionalLight;
 
         private Material mat;
         private Material heightDownsampleMat;
@@ -71,10 +77,11 @@ namespace VolumetricClouds {
         private RenderTexture hiHeightTexture;
         private RenderTexture[] hiHeightTempTextures;
 
-        [Header("Shader references(DONT EDIT)")]
+        [Header("Shader references")]
         public Shader cloudShader;
         public ComputeShader heightPreprocessShader;
         public Shader cloudHeightProcessShader;
+        public Shader cloudShadowShader;
 
         void EnsureMaterial(bool force = false) {
             if (cloudShader == null) {
@@ -106,6 +113,17 @@ namespace VolumetricClouds {
                     }
                 }
                 heightDownsampleMat = new Material(cloudHeightProcessShader);
+            }
+
+            if (cloudShadowShader != null && (cloudShadowMaterial == null || force)) {
+                if (cloudShadowMaterial != null) {
+                    if (Application.isPlaying) {
+                        Destroy(cloudShadowMaterial);
+                    } else {
+                        DestroyImmediate(cloudShadowMaterial);
+                    }
+                }
+                cloudShadowMaterial = new Material(cloudShadowShader);
             }
         }
 
@@ -153,6 +171,7 @@ namespace VolumetricClouds {
             ReleaseRenderTexture(ref downsampledDepth);
             ReleaseRenderTexture(ref heightLutTexture);
             ReleaseRenderTexture(ref hiHeightTexture);
+            ReleaseRenderTexture(ref cloudShadowTexture);
             if (hiHeightTempTextures != null) {
                 for (int i = 0; i < hiHeightTempTextures.Length; i++) {
                     ReleaseRenderTexture(ref hiHeightTempTextures[i]);
@@ -176,10 +195,40 @@ namespace VolumetricClouds {
                     DestroyImmediate(heightDownsampleMat);
                 }
             }
+            if (cloudShadowMaterial != null) {
+                if (Application.isPlaying) {
+                    Destroy(cloudShadowMaterial);
+                } else {
+                    DestroyImmediate(cloudShadowMaterial);
+                }
+            }
+
+            // Clear the cookie when destroyed
+            if (directionalLight != null) {
+                directionalLight.cookie = null;
+            }
         }
 
         private void Start() {
             EnsureMaterial(true);
+            AssignMainLight();
+            previousShadowQuality = configuration == null ? VolumetricCloudsConfiguration.ShadowQuality.High : configuration.shadowQuality;
+        }
+
+        private void AssignMainLight()
+        {
+            Light[] lights = FindObjectsOfType<Light>();
+            
+            if (lights == null || lights.Length == 0) {
+                return;
+            }
+
+            foreach (Light light in lights) {
+                if (light.type == LightType.Directional) {
+                    directionalLight = light;
+                    break;
+                }
+            }
         }
 
         private void GenerateHierarchicalHeightMap() {
@@ -277,6 +326,19 @@ namespace VolumetricClouds {
                 }
             }
 
+            // Create or update top-down view texture
+            if (cloudShadowTexture == null || !cloudShadowTexture.IsCreated() || 
+                cloudShadowTexture.width != 2048 || cloudShadowTexture.height != 2048) {
+                ReleaseRenderTexture(ref cloudShadowTexture);
+                cloudShadowTexture = new RenderTexture(2048, 2048, 0, RenderTextureFormat.ARGB32);
+                cloudShadowTexture.enableRandomWrite = true;
+                cloudShadowTexture.useMipMap = true;
+                cloudShadowTexture.autoGenerateMips = true;
+                cloudShadowTexture.Create();
+                cloudShadowTexture.filterMode = FilterMode.Bilinear;
+                cloudShadowTexture.wrapMode = TextureWrapMode.Repeat;
+            }
+
             if (undersampleBuffer == null || !undersampleBuffer.IsCreated() || 
                 undersampleBuffer.width != width || undersampleBuffer.height != height) {
                 ReleaseRenderTexture(ref undersampleBuffer);
@@ -343,6 +405,7 @@ namespace VolumetricClouds {
 
             mat.SetTexture("_CloudTex", fullBuffer[fullBufferIndex ^ 1]);
 
+
             // Create a temporary buffer if source and destination are the same
             RenderTexture tempBuffer = null;
             if (source == destination) {
@@ -351,11 +414,94 @@ namespace VolumetricClouds {
                 Graphics.Blit(tempBuffer, destination);
                 RenderTexture.ReleaseTemporary(tempBuffer);
             } else {
+                RenderShadows(); 
                 Graphics.Blit(source, destination, mat, 2);
             }
 
             prevV = mcam.worldToCameraMatrix;
             firstFrame = false;
+        }
+
+        private void RenderShadows(){
+            
+            // Handle quality transitions
+            if (configuration.shadowQuality != previousShadowQuality) {
+                if (configuration.shadowQuality == VolumetricCloudsConfiguration.ShadowQuality.Off) {
+                    // Transitioning to Off - release texture
+                    if (cloudShadowTexture != null && cloudShadowTexture.IsCreated()) {
+                        cloudShadowTexture.Release();
+                    }
+                    if (directionalLight != null) {
+                        directionalLight.cookie = null;
+                    }
+                } else if (previousShadowQuality == VolumetricCloudsConfiguration.ShadowQuality.Off) {
+                    // Transitioning from Off to Low/High - recreate texture
+                    if (cloudShadowTexture != null) {
+                        cloudShadowTexture.Create();
+                    }
+                }
+                previousShadowQuality = configuration.shadowQuality;
+            }
+
+            if (configuration.shadowQuality == VolumetricCloudsConfiguration.ShadowQuality.Off) {
+                return;
+            }
+
+            if (cloudShadowShader != null && cloudShadowMaterial != null) {
+                cloudShadowMaterial.SetVector("_WindDirection", new Vector4(
+                    configuration.windDirection.x,
+                    configuration.windDirection.y,
+                    configuration.windSpeed,
+                    -configuration.windSpeed
+                ));
+                cloudShadowMaterial.SetTexture("_WeatherTex", configuration.weatherTex);
+                cloudShadowMaterial.SetFloat("_WeatherTexSize", configuration.weatherTexSize);
+                cloudShadowMaterial.SetTexture("_BaseTex", configuration.baseTexture);
+                cloudShadowMaterial.SetFloat("_BaseTile", configuration.baseTile);
+                cloudShadowMaterial.SetFloat("_CloudStartHeight", configuration.cloudHeightRange.x);
+                cloudShadowMaterial.SetFloat("_CloudEndHeight", configuration.cloudHeightRange.y);
+                cloudShadowMaterial.SetFloat("_CloudOverallDensity", configuration.overallDensity);
+                cloudShadowMaterial.SetFloat("_CloudCoverageModifier", configuration.cloudCoverageModifier);
+                cloudShadowMaterial.SetFloat("_ShadowIntensity", configuration.shadowIntensity);
+                cloudShadowMaterial.SetFloat("_BlurSize", configuration.blurSize); 
+
+                // --- Blur pipeline ---
+                RenderTexture tempRT1 = RenderTexture.GetTemporary(2048, 2048, 0, RenderTextureFormat.ARGB32);
+                RenderTexture tempRT2 = RenderTexture.GetTemporary(2048, 2048, 0, RenderTextureFormat.ARGB32);
+
+                // 1. Render clouds to tempRT1 (first pass)
+                Graphics.Blit(null, tempRT1, cloudShadowMaterial, 0); // Pass 0: cloud alpha
+
+                if (configuration.shadowQuality == VolumetricCloudsConfiguration.ShadowQuality.Low) {
+                    // Low quality: Single pass blur
+                    cloudShadowMaterial.SetFloat("_BlurDirection", 0.0f);
+                    Graphics.Blit(tempRT1, cloudShadowTexture, cloudShadowMaterial, 1);
+                } else {
+                    // High quality: Full two-pass blur
+                    // 2. Horizontal blur to tempRT2
+                    cloudShadowMaterial.SetFloat("_BlurDirection", 0.0f);
+                    Graphics.Blit(tempRT1, tempRT2, cloudShadowMaterial, 1);
+ 
+                    // 3. Vertical blur to cloudShadowTexture
+                    cloudShadowMaterial.SetFloat("_BlurDirection", 1.0f);
+                    Graphics.Blit(tempRT2, cloudShadowTexture, cloudShadowMaterial, 1);
+                }
+
+                RenderTexture.ReleaseTemporary(tempRT1);
+                RenderTexture.ReleaseTemporary(tempRT2);
+                // --- End blur pipeline ---
+
+                //assign as cookie texture on the main light
+                if (directionalLight != null) {
+                    directionalLight.cookie = cloudShadowTexture;
+                    directionalLight.cookieSize = configuration.weatherTexSize / 10f;
+                }
+            }
+        }
+
+        // Public property to access the top-down view texture
+        public RenderTexture CloudShadowTexture {
+            get { return cloudShadowTexture; }
         }
     }
 

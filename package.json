@@ -1,6 +1,6 @@
 {
     "name": "com.collider.volumetricclouds",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "displayName": "Volumetric Clouds",
     "description": "A high-quality volumetric cloud rendering system for Unity",
     "unity": "2022.3",

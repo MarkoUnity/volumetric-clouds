@@ -72,6 +72,15 @@ namespace VolumetricClouds {
         public float atmosphereSaturateDistance = 100000.0f;
         public Color atmosphereColor = new Color(160 / 255.0f, 180 / 255.0f, 200 / 255.0f);
 
+        public enum ShadowQuality { Off, Low, High }
+
+        [Header("Shadows")]
+        public ShadowQuality shadowQuality = ShadowQuality.High;
+        [Range(0, 2f)]
+        public float shadowIntensity = 0.75f;
+        [Range(0.1f, 10f)]
+        public float blurSize = 4.0f;
+
         private class PropertyHash {
             public static int cloudStartHeight = Shader.PropertyToID("_CloudStartHeight");
             public static int cloudEndHeight = Shader.PropertyToID("_CloudEndHeight");
@@ -109,6 +118,9 @@ namespace VolumetricClouds {
             public static int atmosphereColorSaturateDistance = Shader.PropertyToID("_AtmosphereColorSaturateDistance");
             public static int atmosphereColor = Shader.PropertyToID("_AtmosphereColor");
             public static int ambientColor = Shader.PropertyToID("_AmbientColor");
+
+            public static int shadowIntensity = Shader.PropertyToID("_ShadowIntensity");
+            public static int blurSize = Shader.PropertyToID("_BlurSize");
         }
 
         public void ApplyToMaterial(Material mat) {
@@ -145,6 +157,9 @@ namespace VolumetricClouds {
             mat.SetFloat(PropertyHash.atmosphereColorSaturateDistance, atmosphereSaturateDistance);
             mat.SetColor(PropertyHash.atmosphereColor, atmosphereColor);
             mat.SetColor(PropertyHash.ambientColor, ambientColor);
+
+            mat.SetFloat(PropertyHash.shadowIntensity, shadowIntensity);
+            mat.SetFloat(PropertyHash.blurSize, blurSize);
         }
     }
 }

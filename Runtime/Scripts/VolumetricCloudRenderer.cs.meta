@@ -8,6 +8,7 @@ MonoImporter:
   - cloudShader: {fileID: 4800000, guid: af7d8b8b8b8b8b8b8b8b8b8b8b8b8b8b, type: 3}
   - heightPreprocessShader: {fileID: 7200000, guid: 40276bd53f35a694e8d4e025ca310775, type: 3}
   - cloudHeightProcessShader: {fileID: 4800000, guid: b80bf04ca56d3d642a6b925cff3f5ddf, type: 3}
+  - cloudShadowShader: {fileID: 4800000, guid: 931274201368acb47b88c278befada87, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

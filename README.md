@@ -15,6 +15,7 @@ For more details and features please visit https://github.com/yangrc1234/VolumeC
 - Customizable cloud parameters
 - Height-based cloud generation
 - Efficient raymarching implementation
+- Cloud shadows added
 - Example scene included
 
 ## Installation
@@ -41,7 +42,8 @@ For more details and features please visit https://github.com/yangrc1234/VolumeC
    - In the Samples section, click "Import" next to the example scene
    - The example scene will be imported into your project's Assets folder
 3. Add the `VolumetricCloudRenderer` component to your camera
-4. Configure the cloud parameters using the `VolumetricCloudConfiguration` component
+4. Click on the `CreateDefaultConfig` button on the renderer
+5. Configure the cloud parameters using the `VolumetricCloudConfiguration` component
 
 ## Requirements
 

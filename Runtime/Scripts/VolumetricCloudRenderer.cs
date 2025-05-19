@@ -530,13 +530,9 @@ namespace VolumetricClouds {
                     // Scale the cookie size based on the frustum size and cloud system size
                     float cookieSize = Mathf.Max(frustumWidth, configuration.weatherTexSize) * 0.1f;
                     
-                    // Apply the shadow scale from configuration
-                    cookieSize *= configuration.shadowScale;
-                    
-                    // Dynamic clamping based on weather texture size
-                    float minSize = configuration.weatherTexSize * 0.01f; // 1% of weather texture size
-                    float maxSize = configuration.weatherTexSize * 2.0f;  // 200% of weather texture size
-                    cookieSize = Mathf.Clamp(cookieSize, minSize, maxSize);
+                    // Map shadow scale from 0.1-10 range to 10-100000 range
+                    float mappedScale = Mathf.Lerp(10f, 100000f, (configuration.shadowScale - 0.1f) / 9.9f);
+                    cookieSize = mappedScale;
                     
                     directionalLight.cookieSize = cookieSize;
                 }

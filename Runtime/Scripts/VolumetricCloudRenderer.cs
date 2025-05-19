@@ -516,7 +516,29 @@ namespace VolumetricClouds {
                 //assign as cookie texture on the main light
                 if (directionalLight != null) {
                     directionalLight.cookie = cloudShadowTexture;
-                    directionalLight.cookieSize = configuration.weatherTexSize / 10f;
+                    
+                    // Calculate dynamic cookie size based on camera frustum and cloud system
+                    float cameraHeight = mcam.transform.position.y;
+                    float cloudHeight = (configuration.cloudHeightRange.x + configuration.cloudHeightRange.y) * 0.5f;
+                    float heightDifference = Mathf.Abs(cloudHeight - cameraHeight);
+                    
+                    // Calculate the size of the view frustum at cloud height
+                    float frustumSize = 2.0f * heightDifference * Mathf.Tan(mcam.fieldOfView * 0.5f * Mathf.Deg2Rad);
+                    float aspectRatio = mcam.aspect;
+                    float frustumWidth = frustumSize * aspectRatio;
+                    
+                    // Scale the cookie size based on the frustum size and cloud system size
+                    float cookieSize = Mathf.Max(frustumWidth, configuration.weatherTexSize) * 0.1f;
+                    
+                    // Apply the shadow scale from configuration
+                    cookieSize *= configuration.shadowScale;
+                    
+                    // Dynamic clamping based on weather texture size
+                    float minSize = configuration.weatherTexSize * 0.01f; // 1% of weather texture size
+                    float maxSize = configuration.weatherTexSize * 2.0f;  // 200% of weather texture size
+                    cookieSize = Mathf.Clamp(cookieSize, minSize, maxSize);
+                    
+                    directionalLight.cookieSize = cookieSize;
                 }
             }
         }

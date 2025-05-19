@@ -80,6 +80,9 @@ namespace VolumetricClouds {
         public float shadowIntensity = 0.75f;
         [Range(0.1f, 10f)]
         public float blurSize = 4.0f;
+        [Range(0.1f, 10f)]
+        [Tooltip("Scales the size of the cloud shadows. Higher values make shadows cover a larger area.")]
+        public float shadowScale = 1.0f;
 
         private class PropertyHash {
             public static int cloudStartHeight = Shader.PropertyToID("_CloudStartHeight");
@@ -121,6 +124,7 @@ namespace VolumetricClouds {
 
             public static int shadowIntensity = Shader.PropertyToID("_ShadowIntensity");
             public static int blurSize = Shader.PropertyToID("_BlurSize");
+            public static int shadowScale = Shader.PropertyToID("_ShadowScale");
         }
 
         public void ApplyToMaterial(Material mat) {
@@ -160,6 +164,7 @@ namespace VolumetricClouds {
 
             mat.SetFloat(PropertyHash.shadowIntensity, shadowIntensity);
             mat.SetFloat(PropertyHash.blurSize, blurSize);
+            mat.SetFloat(PropertyHash.shadowScale, shadowScale);
         }
     }
 }

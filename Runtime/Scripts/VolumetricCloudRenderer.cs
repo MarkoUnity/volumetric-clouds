@@ -351,19 +351,6 @@ namespace VolumetricClouds {
                 }
             }
 
-            // Create or update top-down view texture
-            if (cloudShadowTexture == null || !cloudShadowTexture.IsCreated() || 
-                cloudShadowTexture.width != 2048 || cloudShadowTexture.height != 2048) {
-                ReleaseRenderTexture(ref cloudShadowTexture);
-                cloudShadowTexture = new RenderTexture(2048, 2048, 0, RenderTextureFormat.ARGB32);
-                cloudShadowTexture.enableRandomWrite = true;
-                cloudShadowTexture.useMipMap = true;
-                cloudShadowTexture.autoGenerateMips = true;
-                cloudShadowTexture.Create();
-                cloudShadowTexture.filterMode = FilterMode.Bilinear;
-                cloudShadowTexture.wrapMode = TextureWrapMode.Repeat;
-            }
-
             if (undersampleBuffer == null || !undersampleBuffer.IsCreated() || 
                 undersampleBuffer.width != width || undersampleBuffer.height != height) {
                 ReleaseRenderTexture(ref undersampleBuffer);
@@ -469,7 +456,27 @@ namespace VolumetricClouds {
             }
 
             if (configuration.shadowQuality == VolumetricCloudsConfiguration.ShadowQuality.Off) {
+                if (cloudShadowTexture != null && cloudShadowTexture.IsCreated()) {
+                    cloudShadowTexture.Release();
+                }
+                if (directionalLight != null && directionalLight.cookie != null) {
+                    directionalLight.cookie = null;
+                }
                 return;
+            }
+
+            
+            // Create or update top-down view texture
+            if (cloudShadowTexture == null || !cloudShadowTexture.IsCreated() || 
+                cloudShadowTexture.width != 2048 || cloudShadowTexture.height != 2048) {
+                ReleaseRenderTexture(ref cloudShadowTexture);
+                cloudShadowTexture = new RenderTexture(2048, 2048, 0, RenderTextureFormat.ARGB32);
+                cloudShadowTexture.enableRandomWrite = true;
+                cloudShadowTexture.useMipMap = true;
+                cloudShadowTexture.autoGenerateMips = true;
+                cloudShadowTexture.Create();
+                cloudShadowTexture.filterMode = FilterMode.Bilinear;
+                cloudShadowTexture.wrapMode = TextureWrapMode.Repeat;
             }
 
             if (cloudShadowShader != null && cloudShadowMaterial != null) {

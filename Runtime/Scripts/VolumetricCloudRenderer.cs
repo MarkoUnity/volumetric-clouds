@@ -213,6 +213,9 @@ namespace VolumetricClouds {
             EnsureMaterial(true);
             AssignMainLight();
             previousShadowQuality = configuration == null ? VolumetricCloudsConfiguration.ShadowQuality.High : configuration.shadowQuality;
+            Vector3 sunDirection = directionalLight != null ? directionalLight.transform.forward : Vector3.down;
+            Shader.SetGlobalVector("_WorldSpaceLightDir0", sunDirection);
+            Shader.SetGlobalVector("_WorldLightPos0", sunDirection);
         }
 
         private void AssignMainLight()

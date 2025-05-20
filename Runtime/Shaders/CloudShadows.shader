@@ -71,7 +71,7 @@ Shader "Custom/CloudShadows"
                 // --- ApplyWind logic from main cloud shader ---
                 float heightPercent = saturate((worldPos.y - _CloudStartHeight) / (_CloudEndHeight - _CloudStartHeight));
                 worldPos.xz += (heightPercent) * _WindDirection.xy;
-                worldPos.xz += (_WindDirection.xy + float2(0.0, 0.1)) * _Time.y * _WindDirection.z;
+                worldPos.xz += (_WindDirection.xy + float2(0.0, 0.1)) * _Time.y * _WindDirection.z * 10;
                 // ------------------------------------------------
 
                 // Sample weather texture for coverage
